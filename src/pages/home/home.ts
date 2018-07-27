@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { HttpClient } from '../../../node_modules/@angular/common/http';
+import { Observable } from '../../../node_modules/rxjs/Observable';
 
 @Component({
   selector: 'page-home',
@@ -7,8 +9,22 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  public items: any;
 
+  constructor(
+    public navCtrl: NavController
+    ,public http: HttpClient
+  ) {
+    this.getData();
+  }
+
+  getData() {
+    let url = 'https://jsonplaceholder.typicode.com/photos';
+    let data: Observable<any> = this.http.get(url);
+    data.subscribe(result => {
+      this.items = result;
+      console.log(result);
+    })
   }
 
 }
